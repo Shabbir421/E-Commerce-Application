@@ -15,7 +15,7 @@ const addressSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema(
   {
-    _id: {
+    clerkId: {
       type: String,
       required: true,
     },
