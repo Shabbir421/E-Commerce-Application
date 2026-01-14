@@ -1,39 +1,44 @@
+/** @format */
+
 import { Webhook } from "svix";
 import User from "../models/userModel.js";
 
 export const clerkWebhooks = async (req, res) => {
   try {
-    const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
+    const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
+    const payload = JSON.stringify(req.body);
 
-    // Buffer → string
-    const payload = req.body.toString("utf8");
-
-    // Verify signature
-    wh.verify(payload, {
+    await whook.verify(payload, {
       "svix-id": req.headers["svix-id"],
       "svix-timestamp": req.headers["svix-timestamp"],
       "svix-signature": req.headers["svix-signature"],
     });
 
-    // ✅ MUST parse payload
-    const { data, type } = JSON.parse(payload);
+    const { data, type } = req.body;
 
-    if (type === "user.created") {
-      await User.create({
-        clerkId: data.id, // user_38G6K5gkWjYFD6NznNrolu0K4PD
-        email: data.email_addresses?.[0]?.email_address || "",
-        name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
-        imgUrl: data.image_url || "",
-      });
+    switch (type) {
+      case "user.created": {
+        const userData = {
+          clerkId: data.id,
+          email: data.email_addresses?.[0]?.email_address || "",
+          name: (data.first_name || "") + " " + (data.last_name || ""),
+          imageUrl: data.image_url || "",
+        };
+        await User.create(userData);
+        return res.json({});
+      }
+
+      case "user.deleted": {
+        await User.findOneAndDelete({ clerkId: data.id });
+        return res.json({});
+      }
+
+      default:
+        return res
+          .status(400)
+          .json({ success: false, message: "Unhandled event type" });
     }
-
-    if (type === "user.deleted") {
-      await User.findOneAndDelete({ clerkId: data.id });
-    }
-
-    return res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Clerk Webhook Error:", error.message);
-    return res.status(400).json({ success: false });
+    return res.status(400).json({ success: false, message: error.message });
   }
 };
