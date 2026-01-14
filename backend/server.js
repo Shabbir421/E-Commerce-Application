@@ -2,35 +2,34 @@
 
 import express from "express";
 import cors from "cors";
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config();
+import Path from "path";
 import connectDB from "./configs/mongodb.js";
-import { clerkWebhooks, stripeWebhooks } from "./controllers/webhooks.js";
-import educatorRouter from "./routes/educatorRoutes.js";
-import { clerkMiddleware } from "@clerk/express";
-import connectCloudinary from "./configs/cloudinary.js";
-import courseRouter from "./routes/courseRoute.js";
-import userRouter from "./routes/userRoutes.js";
 
 // initialize express
 const app = express();
+const __dirname = Path.resolve();
 
 // connect to db
 await connectDB();
-await connectCloudinary();
 
 // middleware
 app.use(cors());
-app.use(clerkMiddleware());
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Edemy API is working fine!");
+app.get("/api", (req, res) => {
+  res.send(" API is working fine!");
 });
-app.post("/clerk", express.json(), clerkWebhooks);
-app.use("/api/educator", express.json(), educatorRouter);
-app.use("/api/course", express.json(), courseRouter);
-app.use("/api/user", express.json(), userRouter);
-app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
+
+// production setup
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(Path.join(__dirname, "../admin/dist")));
+
+  app.get("/{*any}", (req, res) => {
+    res.sendFile(Path.join(__dirname, "../admin", "dist", "index.html"));
+  });
+}
 
 // port
 const PORT = process.env.PORT || 3000;
