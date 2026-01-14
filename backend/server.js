@@ -26,15 +26,6 @@ app.get("/", (req, res) => {
 //!Routes
 app.post("/clerk", express.json(), clerkWebhooks);
 
-// production setup
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(Path.join(__dirname, "../admin/dist")));
-
-  app.get("/{*any}", (req, res) => {
-    res.sendFile(Path.join(__dirname, "../admin", "dist", "index.html"));
-  });
-}
-
 // port
 const PORT = process.env.PORT || 3000;
 
