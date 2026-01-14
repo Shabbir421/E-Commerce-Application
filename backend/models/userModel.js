@@ -15,11 +15,9 @@ const addressSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema(
   {
-    clerkId: {
+    _id: {
       type: String,
       required: true,
-      unique: true,
-      index: true,
     },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -30,4 +28,5 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+export default User;

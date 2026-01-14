@@ -15,30 +15,30 @@ export const clerkWebhooks = async (req, res) => {
       "svix-signature": req.headers["svix-signature"],
     });
 
-    const { data, type } = JSON.parse(payload);
+    const { data, type } = req.body;
 
     switch (type) {
       case "user.created": {
-        await User.create({
-          clerkId: data.id,
-          email: data.email_addresses?.[0]?.email_address,
-          name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
+        const userData = {
+          _id: data.id,
+          email: data.email_addresses?.[0]?.email_address || "",
+          name: (data.first_name || "") + " " + (data.last_name || ""),
           imgUrl: data.image_url || "",
-        });
-        break;
+        };
+        await User.create(userData);
+        return res.json({});
       }
       case "user.deleted": {
-        await User.findOneAndDelete({ clerkId: data.id });
-        break;
+        await User.findByIdAndDelete(data.id);
+        return res.json({});
       }
 
       default:
-        console.log("Unhandled Clerk event:", type);
+        return res
+          .status(400)
+          .json({ success: false, message: "Unhandled event type" });
     }
-
-    res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Clerk Webhook Error:", error.message);
-    res.status(400).json({ success: false });
+    return res.status(400).json({ success: false, message: error.message });
   }
 };
