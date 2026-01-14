@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
     },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    imgUrl: { type: String, default: "" },
+    imageUrl: { type: String, default: "" },
     addresses: [addressSchema],
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   },
