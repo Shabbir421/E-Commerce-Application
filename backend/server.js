@@ -12,18 +12,17 @@ import { clerkWebhooks } from "./controllers/webhooks.js";
 
 const app = express();
 
-// Webhook route MUST come BEFORE json middleware
-app.post("/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
-
 // Normal middleware
 app.use(cors());
-app.use(express.json());
 app.use(clerkMiddleware());
 
 // Test route
 app.get("/", (req, res) => {
   res.send("API is working fine!");
 });
+// Webhook route
+app.post("/clerk", express.json(), clerkWebhooks);
+
 
 const PORT = process.env.PORT || 3000;
 
