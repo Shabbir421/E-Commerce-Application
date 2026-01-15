@@ -1,12 +1,12 @@
-/** @format */
+
 
 import { Webhook } from "svix";
-import User from "../models/userModel.js";
+import User from ""
 
 export const clerkWebhooks = async (req, res) => {
   try {
     const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
-    const payload = JSON.stringify(req.body); 
+    const payload = JSON.stringify(req.body); // Use req.rawBody if available
 
     await whook.verify(payload, {
       "svix-id": req.headers["svix-id"],
