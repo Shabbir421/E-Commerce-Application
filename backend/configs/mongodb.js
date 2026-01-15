@@ -9,7 +9,7 @@ const connectDB = async () => {
     console.log("Database connected successfully!")
   );
   await mongoose.connect(process.env.MONGODB_URI, {
-    dbName: "Edemy_courses",
+    dbName: "E_Commerce_App",
   });
 };
 export default connectDB;
