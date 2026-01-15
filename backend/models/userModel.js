@@ -1,5 +1,6 @@
 /** @format */
 import mongoose from "mongoose";
+
 const addressSchema = new mongoose.Schema({
   label: { type: String, required: true },
   fullName: { type: String, required: true },
@@ -18,7 +19,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true },
     imageUrl: { type: String, required: true },
     addresses: [addressSchema],
-    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+    wishlist: [{ type: String, ref: "Product" }],
   },
   { timestamps: true }
 );
