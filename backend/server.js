@@ -2,9 +2,7 @@
 
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-dotenv.config();
-
+import "dotenv/config";
 import connectDB from "./configs/mongodb.js";
 import connectCloudinary from "./configs/cloudinary.js";
 import { clerkMiddleware } from "@clerk/express";
