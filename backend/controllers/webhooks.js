@@ -25,11 +25,11 @@ export const clerkWebhooks = async (req, res) => {
           imageUrl: data.image_url || "",
         };
         await User.create(userData);
-        return res.json({});
+        return res.status(200).json({ success: true });
       }
       case "user.deleted": {
-        await User.findByIdAndDelete(data.id);
-        return res.json({});
+        await User.findOneAndDelete({ clerkId: data.id });
+        return res.status(200).json({ success: true });
       }
 
       default:
