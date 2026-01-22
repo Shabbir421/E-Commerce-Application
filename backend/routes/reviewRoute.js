@@ -1,7 +1,6 @@
 /** @format */
 
 import { Router } from "express";
-import { protectRoute } from "../middlewares/authMiddleware.js";
 import { createReview, deleteReview } from "../controllers/reviewController.js";
 
 

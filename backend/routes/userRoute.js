@@ -10,7 +10,6 @@ import {
   removeFromWishlist,
   updateAddress,
 } from "../controllers/userController.js";
-import { protectRoute } from "../middlewares/authMiddleware.js";
 
 const userRoute = Router();
 
