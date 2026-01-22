@@ -1,14 +1,14 @@
 /** @format */
 
 import { useQuery } from "@tanstack/react-query";
-import { orderApi, statsApi } from "../lib/api";
+import { orderApi, statsApi } from "../lib/api.js";
 import {
   DollarSignIcon,
   PackageIcon,
   ShoppingBagIcon,
   UsersIcon,
 } from "lucide-react";
-import { capitalizeText, formatDate, getOrderStatusBadge } from "../lib/utils";
+import { capitalizeText, formatDate, getOrderStatusBadge } from "../lib/utils.js";
 
 function DashboardPage() {
   const { data: ordersData, isLoading: ordersLoading } = useQuery({

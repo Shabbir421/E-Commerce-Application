@@ -1,8 +1,8 @@
 /** @format */
 
 import { useQuery } from "@tanstack/react-query";
-import { customerApi } from "../lib/api";
-import { formatDate } from "../lib/utils";
+import { customerApi } from "../lib/api.js";
+import { formatDate } from "../lib/utils.js";
 
 function CustomersPage() {
   const { data, isLoading } = useQuery({

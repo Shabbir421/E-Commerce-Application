@@ -1,5 +1,5 @@
-import { orderApi } from "../lib/api";
-import { formatDate } from "../lib/utils";
+import { orderApi } from "../lib/api.js";
+import { formatDate } from "../lib/utils.js";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
