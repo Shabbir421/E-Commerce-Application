@@ -15,6 +15,16 @@ export const addAddress = async (req, res) => {
       isDefault,
     } = req.body;
     const user = req.user;
+    if (
+      !fullName ||
+      !streetAddress ||
+      !city ||
+      !state ||
+      !zipCode ||
+      !phoneNumber
+    ) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
     // if this is set as default, unset previous default address
     if (isDefault) {
       user.addresses.forEach((addr) => {
@@ -104,7 +114,8 @@ export const deleteAddress = async (req, res) => {
 //! Wishlist Controllers
 export const getWishlist = async (req, res) => {
   try {
-    const user = req.user;
+    // Populate wishlist with product details
+    const user = await User.findById(req.user._id).populate("wishlist");
     res.status(200).json({
       message: "Wishlist retrieved successfully",
       wishlist: user.wishlist,

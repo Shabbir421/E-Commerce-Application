@@ -48,7 +48,9 @@ export const getAllProducts = async (req, res) => {
   try {
     // -1 for descending order most recent first
     const products = await Product.find().sort({ createdAt: -1 });
-    res.status(200).json({ products });
+    res
+      .status(200)
+      .json({ products, message: "Products fetched successfully" });
   } catch (error) {
     console.log("Error fetching products:", error);
     res.status(500).json({ message: "Server Error" });
@@ -112,7 +114,7 @@ export const updateOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
     const { status } = req.body;
-    if (!["Processing", "Shipped", "Delivered"].includes(status)) {
+    if (!["pending", "shipped", "delivered"].includes(status)) {
       return res.status(400).json({ message: "Invalid status value" });
     }
     const order = await Order.findById(orderId);
@@ -120,10 +122,10 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
     order.status = status;
-    if (status === "Shipped" && !order.shippedAt) {
+    if (status === "shipped" && !order.shippedAt) {
       order.shippedAt = new Date();
     }
-    if (status === "Delivered" && !order.deliveredAt) {
+    if (status === "delivered" && !order.deliveredAt) {
       order.deliveredAt = new Date();
     }
     await order.save();
@@ -174,5 +176,33 @@ export const getDashboardStats = async (req, res) => {
   } catch (error) {
     console.log("Error fetching dashboard stats:", error);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Delete images from Cloudinary
+    if (product.images && product.images.length > 0) {
+      const deletePromises = product.images.map((imageUrl) => {
+        // Extract public_id from URL (assumes format: .../products/publicId.ext)
+        const publicId =
+          "products/" + imageUrl.split("/products/")[1]?.split(".")[0];
+        if (publicId) return cloudinary.uploader.destroy(publicId);
+      });
+      await Promise.all(deletePromises.filter(Boolean));
+    }
+
+    await Product.findByIdAndDelete(id);
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({ message: "Failed to delete product" });
   }
 };

@@ -10,18 +10,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.22.12",
+    "@clerk/clerk-react": "^5.59.4",
     "@formspree/react": "^2.5.1",
+    "@sentry/react": "^10.35.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-query": "^5.90.19",
     "@vitejs/plugin-react": "^5.1.2",
-    "axios": "^1.7.9",
+    "axios": "^1.13.2",
     "e-commerce-application": "file:..",
     "framer-motion": "^12.4.2",
     "humanize-duration": "^3.32.1",
+    "lucide-react": "^0.562.0",
     "phosphor-react": "^1.4.1",
     "quill": "^2.0.3",
     "rc-progress": "^4.0.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router": "^7.12.0",
     "react-router-dom": "^7.1.5",
     "react-toastify": "^11.0.3",
     "react-youtube": "^10.1.0",
@@ -31,6 +36,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "autoprefixer": "^10.4.23",
+    "daisyui": "^5.5.14",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18"
   }

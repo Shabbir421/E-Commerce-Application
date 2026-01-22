@@ -20,7 +20,6 @@ const shippingAddressSchema = new mongoose.Schema({
   city: { type: String, required: true },
   zipCode: { type: String, required: true },
   phoneNumber: { type: String, required: true },
-  
 });
 
 const orderSchema = new mongoose.Schema(
@@ -37,8 +36,8 @@ const orderSchema = new mongoose.Schema(
     totalPrice: { type: Number, required: true, min: 0 },
     status: {
       type: String,
-      enum: ["Pending", "Shipped", "Delivered"],
-      default: "Pending",
+      enum: ["pending", "shipped", "delivered"],
+      default: "pending",
     },
     deliveredAt: { type: Date },
     shippedAt: { type: Date },

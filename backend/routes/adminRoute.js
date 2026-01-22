@@ -3,6 +3,7 @@
 import { Router } from "express";
 import {
   createProduct,
+  deleteProduct,
   getAllCustomers,
   getAllOrders,
   getAllProducts,
@@ -20,6 +21,7 @@ adminRoute.use(protectRoute, adminOnly);
 adminRoute.post("/products", upload.array("images", 3), createProduct);
 adminRoute.get("/products", getAllProducts);
 adminRoute.put("/products/:id", upload.array("images", 3), updateProduct);
+adminRoute.delete("/products/:id", deleteProduct);
 //!order routes
 adminRoute.get("/orders", getAllOrders);
 adminRoute.patch("/orders/:orderId/status", updateOrderStatus);
