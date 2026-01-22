@@ -104,7 +104,7 @@ app.use(async (req, res, next) => {
   }
 });
 
-/* Stripe webhook FIRST */
+/* Stripe webhook FIRST   sss*/
 app.post(
   "/api/payment/webhook",
   express.raw({ type: "application/json" }),
@@ -127,7 +127,7 @@ app.use(
 
 /* Public routes */
 app.get("/", (req, res) => {
-  res.send("API is working fine!");
+  res.send("API is working fine dcddcd!");
 });
 app.post("/clerk", clerkWebhooks);
 app.use("/api/products", productRoute);
