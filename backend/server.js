@@ -20,12 +20,7 @@ import paymentRoute from "./routes/paymentRoute.js";
 const app = express();
 
 //* connect to db
-
-app.use(async (req, res, next) => {
-  await connectDB();
-  next();
-});
-
+await connectDB();
 
 //!payment routes
 // special handling: Stripe webhook needs raw body BEFORE any body parsing middleware
