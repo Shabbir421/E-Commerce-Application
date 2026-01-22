@@ -13,14 +13,14 @@ export const useAddresses = () => {
   } = useQuery({
     queryKey: ["addresses"],
     queryFn: async () => {
-      const { data } = await api.get<{ addresses: Address[] }>("/api/users/addresses");
+      const { data } = await api.get<{ addresses: Address[] }>("/users/addresses");
       return data.addresses;
     },
   });
 
   const addAddressMutation = useMutation({
     mutationFn: async (addressData: Omit<Address, "_id">) => {
-      const { data } = await api.post<{ addresses: Address[] }>("/api/users/addresses", addressData);
+      const { data } = await api.post<{ addresses: Address[] }>("/users/addresses", addressData);
       return data.addresses;
     },
     onSuccess: () => {
@@ -37,7 +37,7 @@ export const useAddresses = () => {
       addressData: Partial<Address>;
     }) => {
       const { data } = await api.put<{ addresses: Address[] }>(
-        `/api/users/addresses/${addressId}`,
+        `/users/addresses/${addressId}`,
         addressData
       );
       return data.addresses;
@@ -49,7 +49,7 @@ export const useAddresses = () => {
 
   const deleteAddressMutation = useMutation({
     mutationFn: async (addressId: string) => {
-      const { data } = await api.delete<{ addresses: Address[] }>(`/api/users/addresses/${addressId}`);
+      const { data } = await api.delete<{ addresses: Address[] }>(`/users/addresses/${addressId}`);
       return data.addresses;
     },
     onSuccess: () => {

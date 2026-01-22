@@ -13,14 +13,14 @@ const useWishlist = () => {
   } = useQuery({
     queryKey: ["wishlist"],
     queryFn: async () => {
-      const { data } = await api.get<{ wishlist: Product[] }>("/api/users/wishlist");
+      const { data } = await api.get<{ wishlist: Product[] }>("/users/wishlist");
       return data.wishlist;
     },
   });
 
   const addToWishlistMutation = useMutation({
     mutationFn: async (productId: string) => {
-      const { data } = await api.post<{ wishlist: string[] }>("/api/users/wishlist", { productId });
+      const { data } = await api.post<{ wishlist: string[] }>("/users/wishlist", { productId });
       return data.wishlist;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wishlist"] }),
@@ -28,7 +28,7 @@ const useWishlist = () => {
 
   const removeFromWishlistMutation = useMutation({
     mutationFn: async (productId: string) => {
-      const { data } = await api.delete<{ wishlist: string[] }>(`/api/users/wishlist/${productId}`);
+      const { data } = await api.delete<{ wishlist: string[] }>(`/users/wishlist/${productId}`);
       return data.wishlist;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wishlist"] }),

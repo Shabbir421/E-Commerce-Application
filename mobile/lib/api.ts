@@ -8,7 +8,7 @@ import { useEffect } from "react";
 // const API_URL = "http://localhost:3000";
 
 // prod url will work in your physical device
-const API_URL = "https://e-commerce-application-backend-one.vercel.app";
+const API_URL = "https://e-commerce-application-backend-one.vercel.app/api";
 
 const api = axios.create({
   baseURL: API_URL,
