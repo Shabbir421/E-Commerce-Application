@@ -6,8 +6,8 @@ import { clerkClient } from "@clerk/express";
 
 export const adminOnly = async (req, res, next) => {
   try {
-    const userId = req.auth.userId;
-    const response = await clerkClient.users.getUser(userId);
+    const clerkId = req.auth.userId;
+    const response = await clerkClient.users.getUser(clerkId);
 
     if (response.publicMetadata.role !== "admin") {
       res.json({ success: false, message: "Unauthorized Access!" });
