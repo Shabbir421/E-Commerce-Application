@@ -9,22 +9,20 @@ export const protectRoute = [
   async (req, res, next) => {
     try {
       const clerkId = req.auth().userId;
-      if (!clerkId) {
+      if (!clerkId)
         return res
           .status(401)
-          .json({ success: false, message: "Unauthorized! invalid token" });
-      }
+          .json({ message: "Unauthorized - invalid token" });
 
-      const user = await User.findOne({ clerkId: clerkId });
-      if (!user) {
-        return res
-          .status(401)
-          .json({ success: false, message: "Unauthorized! User not found" });
-      }
+      const user = await User.findOne({ clerkId });
+      if (!user) return res.status(404).json({ message: "User not found" });
+
       req.user = user;
+
       next();
     } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
+      console.error("Error in protectRoute middleware", error);
+      res.status(500).json({ message: "Internal server error" });
     }
   },
 ];
@@ -37,5 +35,6 @@ export const adminOnly = (req, res, next) => {
   if (req.user.email !== process.env.ADMIN_EMAIL) {
     return res.status(403).json({ message: "Forbidden - admin access only" });
   }
+
   next();
 };
