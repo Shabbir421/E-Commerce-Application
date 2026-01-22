@@ -19,7 +19,6 @@
     "dotenv": "^16.6.1",
     "express": "^4.22.1",
     "index.js": "^0.0.3",
-    "inngest": "^3.49.3",
     "mongoose": "^8.21.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.9",
