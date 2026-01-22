@@ -58,4 +58,9 @@ app.use("/api/products", productRoute);
 //! cart routes
 app.use("/api/cart", cartRoutes);
 
-export default app;
+//! port
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}`);
+});
