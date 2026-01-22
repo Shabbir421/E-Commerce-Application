@@ -16,9 +16,10 @@ import { upload } from "../configs/multer.js";
 
 const adminRoute = Router();
 //optimize the routes
-adminRoute.get("/products", getAllProducts);
 adminRoute.use(protectRoute, adminOnly);
+
 //!product routes
+adminRoute.get("/products", getAllProducts);
 adminRoute.post("/products", upload.array("images", 3), createProduct);
 adminRoute.put("/products/:id", upload.array("images", 3), updateProduct);
 adminRoute.delete("/products/:id", deleteProduct);
