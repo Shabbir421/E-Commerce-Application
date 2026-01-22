@@ -40,7 +40,7 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(clerkMiddleware());
 
 //! Routes
-app.get("/api/check", (req, res) => {
+app.get("/", (req, res) => {
   res.send("API is working fine!");
 });
 app.post("/clerk", express.json(), clerkWebhooks);
