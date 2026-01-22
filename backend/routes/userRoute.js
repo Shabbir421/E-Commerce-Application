@@ -13,7 +13,6 @@ import {
 import { protectRoute } from "../middlewares/authMiddleware.js";
 
 const userRoute = Router();
-userRoute.use(protectRoute);
 
 //! Address Routes
 userRoute.get("/addresses", getAddresses);

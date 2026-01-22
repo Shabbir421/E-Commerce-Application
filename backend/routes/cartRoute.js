@@ -12,7 +12,6 @@ import {
 
 const cartRoute = Router();
 
-cartRoute.use(protectRoute);
 
 cartRoute.get("/", getCart);
 cartRoute.post("/", addToCart);

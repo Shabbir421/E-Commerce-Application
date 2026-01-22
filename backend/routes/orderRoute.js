@@ -6,7 +6,6 @@ import { createOrder, getUserOrders } from "../controllers/orderController.js";
 
 
 const orderRoute = Router();
-orderRoute.use(protectRoute);
 
 //! order routes
 orderRoute.get("/", getUserOrders);

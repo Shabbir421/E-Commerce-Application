@@ -6,7 +6,7 @@ import { protectRoute } from "../middlewares/authMiddleware.js";
 
 const paymentRoute = Router();
 
-paymentRoute.post("/create-intent", protectRoute, createPaymentIntent);
+paymentRoute.post("/create-intent",createPaymentIntent);
 
 // No auth needed - Stripe validates via signature
 paymentRoute.post("/webhook", handleWebhook);

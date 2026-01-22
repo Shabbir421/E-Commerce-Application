@@ -1,35 +1,19 @@
-import User from "../models/userModel.js";
-import "dotenv/config";
+/** @format */
 
-export const protectRoute = async (req, res, next) => {
+import { clerkClient } from "@clerk/express";
+
+// Middleware (protect admin route)
+
+export const adminOnly = async (req, res, next) => {
   try {
-    const clerkId = req.auth.userId;
-    if (!clerkId) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Unauthorized! invalid token" });
-    }
+    const userId = req.auth.userId;
+    const response = await clerkClient.users.getUser(userId);
 
-    const user = await User.findOne({ clerkId: clerkId });
-    if (!user) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Unauthorized! User not found" });
+    if (response.publicMetadata.role !== "admin") {
+      res.json({ success: false, message: "Unauthorized Access!" });
     }
-    req.user = user;
     next();
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.json({ success: false, message: error.message });
   }
-};
-
-export const adminOnly = (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({ message: "Unauthorized - user not found" });
-  }
-
-  if (req.user.email !== process.env.ADMIN_EMAIL) {
-    return res.status(403).json({ message: "Forbidden - admin access only" });
-  }
-  next();
 };

@@ -11,12 +11,12 @@ import {
   updateOrderStatus,
   updateProduct,
 } from "../controllers/adminController.js";
-import { protectRoute, adminOnly } from "../middlewares/authMiddleware.js";
+import { adminOnly } from "../middlewares/authMiddleware.js";
 import { upload } from "../configs/multer.js";
 
 const adminRoute = Router();
 //optimize the routes
-adminRoute.use(protectRoute, adminOnly);
+adminRoute.use(adminOnly);
 
 //!product routes
 adminRoute.get("/products", getAllProducts);
