@@ -2,7 +2,6 @@
 
 import { requireAuth } from "@clerk/express";
 import User from "../models/userModel.js";
-import "dotenv/config";
 
 export const protectRoute = async (req, res, next) => {
   try {
@@ -11,6 +10,7 @@ export const protectRoute = async (req, res, next) => {
 
       if (!clerkId) {
         return res.status(401).json({
+          success: false,
           message: "Unauthorized - invalid token",
         });
       }
@@ -19,6 +19,7 @@ export const protectRoute = async (req, res, next) => {
 
       if (!user) {
         return res.status(404).json({
+          success: false,
           message: "User not found",
         });
       }
@@ -28,36 +29,25 @@ export const protectRoute = async (req, res, next) => {
     });
   } catch (error) {
     console.error("protectRoute error:", error);
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
   }
 };
 
-export const adminOnly = async (req, res, next) => {
-  try {
-    const userId = req.auth?.userId;
-
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized - no user ID",
-      });
-    }
-
-    const user = await clerkClient.users.getUser(userId);
-
-    if (user.publicMetadata?.role !== "admin") {
-      return res.status(403).json({
-        success: false,
-        message: "Admin access only",
-      });
-    }
-
-    next();
-  } catch (error) {
-    console.error("adminOnly error:", error);
-    res.status(500).json({
-      success: false,
-      message: error.message,
+export const adminOnly = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: "Unauthorized - user not found",
     });
   }
+
+  if (req.user.email !== process.env.ADMIN_EMAIL) {
+    return res.status(403).json({
+      message: "Forbidden - admin access only",
+    });
+  }
+
+  next();
 };
