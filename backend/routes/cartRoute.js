@@ -1,6 +1,7 @@
 /** @format */
 
 import { Router } from "express";
+import { protectRoute } from "../middlewares/authMiddleware.js";
 import {
   getCart,
   addToCart,
@@ -11,6 +12,7 @@ import {
 
 const cartRoute = Router();
 
+cartRoute.use(protectRoute);
 
 cartRoute.get("/", getCart);
 cartRoute.post("/", addToCart);
