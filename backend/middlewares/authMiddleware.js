@@ -2,18 +2,34 @@
 
 import { clerkClient } from "@clerk/express";
 
-// Middleware (protect admin route)
-
 export const adminOnly = async (req, res, next) => {
   try {
-    const clerkId = req.auth.userId;
-    const response = await clerkClient.users.getUser(clerkId);
+    // ✅ NEW Clerk API (no deprecation warning)
+    const { userId } = req.auth();
 
-    if (response.publicMetadata.role !== "admin") {
-      res.json({ success: false, message: "Unauthorized Access!" });
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authenticated",
+      });
     }
+
+    const user = await clerkClient.users.getUser(userId);
+
+    if (user.publicMetadata?.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized access",
+      });
+    }
+
+    // ✅ Only admins reach here
     next();
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    console.error("Admin auth error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Authorization failed",
+    });
   }
 };
