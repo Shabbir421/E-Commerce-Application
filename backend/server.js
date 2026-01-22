@@ -36,7 +36,12 @@ app.use(
 );
 
 //! middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://e-commerce-application-admin.vercel.app",
+    credentials: true,
+  }),
+);
 app.use(clerkMiddleware());
 
 //! Routes
